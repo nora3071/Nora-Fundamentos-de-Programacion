@@ -1,4 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 using System;  // Importa las clases básicas (como Console)
 
 class Program
@@ -14,20 +15,37 @@ class Program
         // Constante: porcentaje de descuento (10%)
         const decimal porcentajeDescuento = 0.10m;
 
-        // Subproblema 1: Pedir al usuario cuántos productos va a ingresar
-        Console.Write("¿Cuántos productos desea ingresar? ");
-        int n = int.Parse(Console.ReadLine() ?? "0");
+        // === VALIDACIÓN: número de productos ===
+        int n;
+        while (true)
+        {
+            Console.Write("¿Cuántos productos desea ingresar? ");
+            if (int.TryParse(Console.ReadLine(), out n) && n > 0)
+            {
+                break;
+            }
+            Console.WriteLine(" Debe ingresar un número entero mayor que 0.");
+        }
 
         // Bucle que se repite para cada producto
         for (int i = 1; i <= n; i++)
         {
             Console.WriteLine($"\nProducto #{i}");
 
-            // Leer nombre del producto
-            Console.Write("Nombre: ");
-            string nombre = Console.ReadLine() ?? "Sin nombre";
+            // === VALIDACIÓN: nombre del producto ===
+            string nombre;
+            while (true)
+            {
+                Console.Write("Nombre: ");
+                nombre = Console.ReadLine()?.Trim() ?? "";
+                if (!string.IsNullOrEmpty(nombre))
+                {
+                    break;
+                }
+                Console.WriteLine(" El nombre no puede estar vacío.");
+            }
 
-            // Leer cantidad de unidades (validando que sea > 0)
+            // === VALIDACIÓN: cantidad de unidades ===
             int cantidad;
             while (true)
             {
@@ -36,10 +54,10 @@ class Program
                 {
                     break;
                 }
-                Console.WriteLine("La cantidad debe ser un número entero mayor que 0.");
+                Console.WriteLine(" La cantidad debe ser un número entero mayor que 0.");
             }
 
-            // Leer precio unitario (validando que sea > 0)
+            // === VALIDACIÓN: precio unitario ===
             decimal precio;
             while (true)
             {
@@ -48,7 +66,7 @@ class Program
                 {
                     break;
                 }
-                Console.WriteLine("El precio debe ser un número mayor que 0.");
+                Console.WriteLine(" El precio debe ser un número mayor que 0.");
             }
 
             // Calcular subtotal (cantidad × precio)
@@ -61,7 +79,7 @@ class Program
             Console.WriteLine($"Subtotal {nombre}: C${subtotal:F2}");
         }
 
-        // Subprograma 2:Verificar si el total supera el límite para aplicar descuento
+        // Subprograma 2: Verificar si el total supera el límite para aplicar descuento
         if (total > limiteDescuento)
         {
             decimal descuento = total * porcentajeDescuento;
@@ -77,3 +95,6 @@ class Program
         Console.ReadKey();
     }
 }
+
+
+
